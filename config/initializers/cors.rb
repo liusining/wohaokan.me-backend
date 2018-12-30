@@ -7,11 +7,12 @@
 
 Rails.application.config.middleware.insert_before 0, Rack::Cors do
   allow do
-    origins 'stg.wohaokan.me', 'wohaokan.me', 'www.wohaokan.me', 'localhost'
+    origins 'stg.wohaokan.me', 'wohaokan.me', 'www.wohaokan.me', 'localhost:9901'
 
     resource '*',
-      headers: :any,
-      methods: [:get, :post, :put, :patch, :delete, :options, :head],
-      max_age: 600
+             headers: :any,
+             methods: [:get, :post, :put, :patch, :delete, :options, :head],
+             max_age: 600,
+             credentials: true
   end
 end
