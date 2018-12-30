@@ -17,3 +17,5 @@
 
 # Ignore encrypted secrets key file.
 config/secrets.yml.key
+
+deploy.sh
