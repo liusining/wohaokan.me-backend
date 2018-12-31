@@ -5,6 +5,9 @@ class ImagesController < ApplicationController
   def upload_image
     # TODO: use cloudfront to speed up image services
     # TODO: limit image size in nginx, for speeding up, for facepp limitation
+    # TODO: compress image using lambda
+    # TODO: use a host in China to speed up images uploading
+    # TODO: prevent images on iphone from being rotated
     s3_key, url = UploadImageService.perform(params[:image].tempfile)
     beauty, gender, age = DetectFaceService.perform(params[:image])
     img = Image.new(url: url, beauty: beauty.to_f, gender: gender, age: age, user: current_user, s3_key: s3_key)
@@ -17,9 +20,9 @@ class ImagesController < ApplicationController
 
   def get_images
     if request.headers['X-Session-Key'].blank? || !current_user.present?
-      url = "http://b-ssl.duitang.com/uploads/item/201502/16/20150216205649_wQ2fK.jpeg"
+      url = "https://s3-ap-northeast-1.amazonaws.com/wohaokan.me/cover-test.jpeg"
       obj = { url: url, likes: 17, user_id: -1, age: 0 }
-      format_render(200, 'not logging in, cover image only', { images: [obj], pagination: { page: 1, total: 0 } })
+      format_render(200, 'not logging in, cover image only', { images: [obj] * 10, pagination: { page: 1, total: 10 } })
       return
     end
     # TODO: only return images that are currently used
