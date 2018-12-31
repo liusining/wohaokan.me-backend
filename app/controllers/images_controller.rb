@@ -24,7 +24,7 @@ class ImagesController < ApplicationController
     end
     # TODO: only return images that are currently used
     page   = params[:page].to_i.positive? ? params[:page].to_i : 1
-    images = Image.offset((page - 1) * 10).map do |img| # TODO: select only valid images
+    images = Image.limit(10).offset((page - 1) * 10).map do |img| # TODO: select only valid images
       {
         url:     Aws::S3::Object.new(Rails.application.secrets[:face_image_bucket], img.s3_key).presigned_url(:get, expires_in: 3600),
         user_id: img.user_id,
