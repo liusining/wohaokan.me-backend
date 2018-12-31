@@ -3,4 +3,5 @@ Rails.application.routes.draw do
   post :upload_image, to: 'images#upload_image'
   post :login, to: 'users#login'
   get :get_user, to: 'users#get_user'
+  get :get_images, to: 'images#get_images'
 end
