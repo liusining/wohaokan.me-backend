@@ -19,7 +19,7 @@ class FaceppBizTokenService
       sign: signature,
       sign_version: 'hmac_sha1',
       return_url: WEB_HOST,
-      notify_url: "#{API_HOST}/facepp_liveness_result".freeze,
+      notify_url: "#{API_HOST}/facepp_liveness_result?token=#{Rails.application.secrets['facepp_connection_token']}".freeze,
       biz_no: img_obj.id.to_s,
       comparison_type: 0,
       liveness_type: 'video_number',
