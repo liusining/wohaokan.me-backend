@@ -8,6 +8,8 @@ class ImagesController < ApplicationController
     # TODO: compress image using lambda
     # TODO: use a host in China to speed up images uploading
     # TODO: prevent images on iphone from being rotated
+    # TODO: adjust values of beauty and age to make users happy
+    # TODO: stop low-quality images
     s3_key, url = UploadImageService.perform(params[:image].tempfile)
     beauty, gender, age = DetectFaceService.perform(params[:image])
     img = Image.new(url: url, beauty: beauty.to_f, gender: gender, age: age, user: current_user, s3_key: s3_key, image_no: SecureRandom.base58(24))
