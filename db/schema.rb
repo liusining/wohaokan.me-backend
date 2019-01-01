@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190101060243) do
+ActiveRecord::Schema.define(version: 20190101093253) do
 
   create_table "images", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4" do |t|
     t.string "url"
@@ -22,7 +22,10 @@ ActiveRecord::Schema.define(version: 20190101060243) do
     t.bigint "user_id"
     t.string "s3_key"
     t.boolean "verified"
-    t.string "biz_token"
+    t.string "biz_token", limit: 50
+    t.string "image_no", limit: 30
+    t.string "verify_msg"
+    t.index ["biz_token"], name: "index_images_on_biz_token", unique: true
     t.index ["user_id"], name: "index_images_on_user_id"
   end
 

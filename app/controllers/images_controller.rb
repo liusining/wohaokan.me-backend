@@ -10,11 +10,11 @@ class ImagesController < ApplicationController
     # TODO: prevent images on iphone from being rotated
     s3_key, url = UploadImageService.perform(params[:image].tempfile)
     beauty, gender, age = DetectFaceService.perform(params[:image])
-    img = Image.new(url: url, beauty: beauty.to_f, gender: gender, age: age, user: current_user, s3_key: s3_key)
+    img = Image.new(url: url, beauty: beauty.to_f, gender: gender, age: age, user: current_user, s3_key: s3_key, image_no: SecureRandom.base58(24))
     if img.save
       biz_token = FaceppBizTokenService.perform(img, params[:image])
       img.biz_token = biz_token
-      img.save
+      img.save!
       render json: { status: 200, msg: 'OK', result: { beauty: beauty, gender: gender, age: age, verify_url: "https://openapi.faceid.com/lite/v1/do/#{biz_token}" } }
     else
       format_render(400, '图片上传失败')

@@ -3,6 +3,7 @@ class DetectFaceService
 
   def self.perform(image)
     Rails.logger.tagged('DetectFaceService'.freeze) {|logger| logger.info "begin detecting face"}
+    start_time = Time.now
     image.rewind if image.eof?
     payload = {
       api_key: Rails.application.secrets.facepp_api_key,
@@ -16,6 +17,7 @@ class DetectFaceService
     gender = face_attrs['gender']['value']
     age = face_attrs['age']['value']
     beauty = face_attrs['beauty']["#{gender.downcase}_score"]
+    Rails.logger.tagged('DetectFaceService'.freeze) {|logger| logger.info "time used: #{Time.now - start_time}s"}
     return [beauty, gender, age]
   end
 end
