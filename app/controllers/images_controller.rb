@@ -32,7 +32,7 @@ class ImagesController < ApplicationController
         url:     Aws::S3::Object.new(Rails.application.secrets[:face_image_bucket], img.s3_key).presigned_url(:get, expires_in: 3600),
         user_id: img.user_id,
         likes:   17,
-        age:     23
+        age:     img.user.age
       }
     end
     format_render(200, 'OK', { images: images, pagination: { page: page, total: Image.count} }) # TODO: count only valid images

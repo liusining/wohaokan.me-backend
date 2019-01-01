@@ -21,6 +21,7 @@ class UsersController < ApplicationController
   def get_user
     result = {
       name: current_user.name,
+      mixin_id: current_user.mixin_id,
       description: current_user.description,
       has_image: !!current_user.current_image,
       image: current_user.image_url.to_s,
@@ -32,7 +33,8 @@ class UsersController < ApplicationController
       tip_transations: {
         count: 5,
         to_boy: 2,
-        to_girl: 3
+        to_girl: 3,
+        images: ["https://s3-ap-northeast-1.amazonaws.com/wohaokan.me/cover-test.jpeg"] * 5
       }
     }
     format_render(200, 'OK', result)
