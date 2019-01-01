@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
-  before_action :load_user, only: [:get_user]
-  before_action :check_params, only: [:login]
+  before_action :load_user, only: [:get_user, :update_info, :update_image]
+  before_action :check_params, only: [:login, :update_image]
 
   def login
     resp = AuthInfoService.perform(params[:code], request.request_id)
@@ -40,9 +40,28 @@ class UsersController < ApplicationController
     format_render(200, 'OK', result)
   end
 
+  def update_image
+
+  end
+
+  def update_info
+    current_user.assign_attributes(nickname: params[:name], age: params[:age], description: params[:description].to_s)
+    if current_user.save
+      format_render
+    else
+      logger.info current_user.errors.full_messages
+      format_render(400, '更新失败')
+    end
+  end
+
   private
 
   def check_params
-    params.require(:code)
+    if params[:action] == 'login'
+      params.require(:code)
+    end
+    if params[:action] == 'update_image'
+      params.require(:image)
+    end
   end
 end
