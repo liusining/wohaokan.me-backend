@@ -5,7 +5,7 @@ class User < ApplicationRecord
 
   def self.init_from_mixin(mixin)
     mixin_id          = mixin['identity_number'].to_i
-    user              = find_by_mixin_id(mixin_id) || new
+    user              = find_by_mixin_id(mixin_id) || new(mixin_id: mixin_id)
     user.session_key  = SecureRandom.base58(24)
     user.avatar_url   = mixin['avatar_url']
     user.mixin_name   = mixin['full_name']

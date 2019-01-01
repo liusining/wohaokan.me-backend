@@ -7,6 +7,8 @@ class AuthInfoService
       auth_code: auth_code,
       request_id: request_id
     }
-    RestClient.post(URL, payload) {|resp, _req, _result| resp}
+    ret = RestClient.post(URL, payload) {|resp, _req, _result| resp}
+    Rails.logger.tagged('AuthInfoService'.freeze) {|logger| logger.info "auth info response: #{ret}"}
+    ret
   end
 end
