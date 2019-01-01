@@ -5,6 +5,7 @@ class FaceppBizTokenService
 
   def self.perform(img_obj, file)
     Rails.logger.tagged('FaceppBizTokenService'.freeze) {|logger| logger.info "begin applying for a face++ biz-token"}
+    start_time = Time.now
     # reopen image file since it has been closed in the former step
     if file.tempfile.closed?
       file = File.new(file.tempfile)
@@ -25,6 +26,7 @@ class FaceppBizTokenService
     }
     resp = RestClient.post(URL, req_params) {|res, _req, _result| res}
     Rails.logger.tagged('FaceppBizTokenService'.freeze) {|logger| logger.info "face++ response: #{resp}"}
+    Rails.logger.tagged('FaceppBizTokenService'.freeze) {|logger| logger.info "time used: #{Time.now - start_time}s"}
     file.close
     biz_token = JSON.parse(resp.body)['biz_token']
     return biz_token
