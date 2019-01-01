@@ -12,7 +12,10 @@ class ImagesController < ApplicationController
     beauty, gender, age = DetectFaceService.perform(params[:image])
     img = Image.new(url: url, beauty: beauty.to_f, gender: gender, age: age, user: current_user, s3_key: s3_key)
     if img.save
-      render json: { status: 200, msg: 'OK', result: { beauty: beauty, gender: gender, age: age } }
+      biz_token = FaceppBizTokenService.perform(img, params[:image])
+      img.biz_token = biz_token
+      img.save
+      render json: { status: 200, msg: 'OK', result: { beauty: beauty, gender: gender, age: age, verify_url: "https://openapi.faceid.com/lite/v1/do/#{biz_token}" } }
     else
       format_render(400, '图片上传失败')
     end

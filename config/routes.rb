@@ -4,4 +4,5 @@ Rails.application.routes.draw do
   post :login, to: 'users#login'
   get :get_user, to: 'users#get_user'
   get :get_images, to: 'images#get_images'
+  post :facepp_liveness_result, to: 'verification#facepp_liveness_result'
 end
