@@ -39,7 +39,13 @@ class VerificationController < ApplicationController
     end
     status_code = img.verified ? 200 : 400
     msg = img.verified ? 'OK' : "认证失败：#{img.verify_msg}"
-    format_render(status_code, msg)
+    result = {
+      url: Aws::S3::Object.new(Rails.application.secrets[:face_image_bucket], img.s3_key).presigned_url(:get, expires_in: 3600),
+      beauty: img.beauty,
+      gender: img.gender,
+      age: img.age
+    }
+    format_render(status_code, msg, result)
   end
 
   private
