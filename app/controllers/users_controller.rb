@@ -22,6 +22,7 @@ class UsersController < ApplicationController
     result = {
       name: current_user.name,
       description: current_user.description,
+      has_image: !!current_user.current_image,
       image: current_user.image_url.to_s,
       beauty: current_user.beauty.to_i,
       gender: current_user.gender.to_s,
