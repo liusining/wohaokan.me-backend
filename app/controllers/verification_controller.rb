@@ -5,6 +5,7 @@ class VerificationController < ApplicationController
   before_action :check_params, only: [:get_verify_result]
 
   def facepp_liveness_result
+    # TODO: handle video error, since this error may cause image verification status to be changed before the final result arrives
     result = JSON.parse(params[:data])
     if result['biz_token'].blank?
       return # invalid request
@@ -16,6 +17,9 @@ class VerificationController < ApplicationController
     img.verified = result['result_code'] == VERIFY_SUCCESS
     img.verify_msg = result['result_message']
     img.save!
+    if img.verified
+      img.assign_to_user!
+    end
   end
 
   def get_verify_result
@@ -29,6 +33,9 @@ class VerificationController < ApplicationController
       img.verified = result_code == VERIFY_SUCCESS
       img.verify_msg = result_message
       img.save!
+      if img.verified
+        img.assign_to_user!
+      end
     end
     status_code = img.verified ? 200 : 400
     msg = img.verified ? 'OK' : "认证失败：#{img.verify_msg}"
