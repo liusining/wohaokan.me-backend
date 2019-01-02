@@ -15,7 +15,8 @@ class ApplicationController < ActionController::API
       return
     end
     unless current_user.present?
-      render json: { error: "invalid session key" }, status: 401
+      render json: { status: 700, msg: 'invalid session key', result: {} }, status: 200
+      # NOTE: 700 means turning to login
     end
   end
 end
