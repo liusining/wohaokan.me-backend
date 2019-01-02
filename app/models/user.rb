@@ -35,4 +35,8 @@ class User < ApplicationRecord
       0
     end
   end
+
+  def likes_count
+    12
+  end
 end

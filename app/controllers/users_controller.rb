@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
-  before_action :load_user, only: [:get_user, :update_info, :update_image]
-  before_action :check_params, only: [:login, :update_image]
+  before_action :load_user, only: [:get_user, :update_info, :update_image, :show]
+  before_action :check_params, only: [:login, :update_image, :show]
 
   def login
     resp = AuthInfoService.perform(params[:code], request.request_id)
@@ -19,6 +19,7 @@ class UsersController < ApplicationController
   end
 
   def get_user
+    # TODO: use real data
     result = {
       name: current_user.name,
       mixin_id: current_user.mixin_id,
@@ -36,6 +37,22 @@ class UsersController < ApplicationController
         to_girl: 3,
         images: ["https://s3-ap-northeast-1.amazonaws.com/wohaokan.me/cover-test.jpeg"] * 5
       }
+    }
+    format_render(200, 'OK', result)
+  end
+
+  # show this user to others
+  def show
+    target_user = User.find_by_uid(params[:id])
+    unless target_user.present?
+      render json: {error: 'the user is not found'}, status: 404
+      return
+    end
+    result = {
+      name: target_user.name,
+      age: target_user.age,
+      likes: target_user.likes_count,
+      description: target_user.description
     }
     format_render(200, 'OK', result)
   end
@@ -62,6 +79,9 @@ class UsersController < ApplicationController
     end
     if params[:action] == 'update_image'
       params.require(:image)
+    end
+    if params[:action] == 'show'
+      params.require(:id)
     end
   end
 end

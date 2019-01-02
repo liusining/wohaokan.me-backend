@@ -3,7 +3,6 @@ class ImagesController < ApplicationController
   before_action :load_user, only: [:upload_image]
 
   def upload_image
-    # TODO: use cloudfront to speed up image services
     # TODO: limit image size in nginx, for speeding up, for facepp limitation
     # TODO: compress image using lambda
     # TODO: use a host in China to speed up images uploading
@@ -24,23 +23,23 @@ class ImagesController < ApplicationController
   end
 
   def get_images
+    # the user are not logging in
     if request.headers['X-Session-Key'].blank? || !current_user.present?
       url = "https://s3-ap-northeast-1.amazonaws.com/wohaokan.me/cover-test.jpeg"
-      obj = { url: url, likes: 17, user_id: -1, age: 0 }
+      obj = { url: url, user_id: ""}
       format_render(200, 'not logging in, cover image only', { images: [obj] * 10, pagination: { page: 1, total: 10 } })
       return
     end
-    # TODO: only return images that are currently used
+    # the user have logged in
     page   = params[:page].to_i.positive? ? params[:page].to_i : 1
-    images = Image.limit(10).offset((page - 1) * 10).map do |img| # TODO: select only valid images
+    valid_images = Image.where(using: true, verified: true)
+    images = valid_images.limit(10).offset((page - 1) * 10).map do |img|
       {
         url:     img.signed_url,
-        user_id: img.user_id,
-        likes:   17,
-        age:     img.user.age
+        user_id: img.user.uid
       }
     end
-    format_render(200, 'OK', { images: images, pagination: { page: page, total: Image.count} }) # TODO: count only valid images
+    format_render(200, 'OK', { images: images, pagination: { page: page, total: valid_images.count} })
   end
 
   private

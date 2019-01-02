@@ -7,4 +7,5 @@ Rails.application.routes.draw do
   get :get_verify_result, to: 'verification#get_verify_result'
   post :update_info, to: 'users#update_info'
   post :update_image, to: 'users#update_image'
+  get 'users/:id', to: 'users#show'
 end

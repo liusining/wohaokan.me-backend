@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190101093253) do
+ActiveRecord::Schema.define(version: 20190102111208) do
 
   create_table "images", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4" do |t|
     t.string "url"
@@ -25,6 +25,7 @@ ActiveRecord::Schema.define(version: 20190101093253) do
     t.string "biz_token", limit: 50
     t.string "image_no", limit: 30
     t.string "verify_msg"
+    t.boolean "using"
     t.index ["biz_token"], name: "index_images_on_biz_token", unique: true
     t.index ["user_id"], name: "index_images_on_user_id"
   end
@@ -45,9 +46,11 @@ ActiveRecord::Schema.define(version: 20190101093253) do
     t.integer "age"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "uid", limit: 30
     t.index ["current_image_id"], name: "index_users_on_current_image_id"
     t.index ["mixin_id"], name: "index_users_on_mixin_id"
     t.index ["session_key"], name: "index_users_on_session_key"
+    t.index ["uid"], name: "index_users_on_uid", unique: true
   end
 
   add_foreign_key "images", "users"
