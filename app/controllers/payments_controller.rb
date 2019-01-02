@@ -9,7 +9,14 @@ class PaymentsController < ApplicationController
       return
     end
     order = Order.create!(issuer: current_user, endpoint: endpoint, trace_id: UUIDTools::UUID.timestamp_create.to_s)
-    format_render(200, 'OK', { pay_url: order.mixin_pay_url })
+    result = { pay_url: order.mixin_pay_url,
+               amount: Order::AMOUNT,
+               asset_id: Order::EOS_ASSET_ID,
+               opponent_id: Order::WOHAOKANME_CLIENT_ID,
+               trace_id: order.trace_id }
+    format_render(200, 'OK', result)
+  end
+
   end
 
   private
