@@ -25,7 +25,7 @@ class UsersController < ApplicationController
       mixin_id: current_user.mixin_id,
       description: current_user.description,
       has_image: !!current_user.current_image,
-      image: current_user.image_url.to_s,
+      image: current_user.image_signed_url.to_s,
       beauty: current_user.beauty.to_i,
       gender: current_user.gender.to_s,
       age: current_user.age,
@@ -51,6 +51,7 @@ class UsersController < ApplicationController
     result = {
       name: target_user.name,
       age: target_user.age,
+      gender: target_user.gender,
       likes: target_user.likes_count,
       description: target_user.description
     }

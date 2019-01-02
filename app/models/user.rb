@@ -1,6 +1,6 @@
 class User < ApplicationRecord
   belongs_to :current_image, class_name: 'Image', optional: true
-  delegate :url, to: :current_image, prefix: 'image', allow_nil: true
+  delegate :signed_url, to: :current_image, prefix: 'image', allow_nil: true
   delegate :gender, :beauty, to: :current_image, allow_nil: true
 
   def self.init_from_mixin(mixin)
