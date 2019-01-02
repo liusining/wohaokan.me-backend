@@ -19,3 +19,5 @@
 config/secrets.yml.key
 
 deploy.sh
+
+config/cloudfront_key.pem
