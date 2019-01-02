@@ -3,6 +3,8 @@ class User < ApplicationRecord
   delegate :signed_url, to: :current_image, prefix: 'image', allow_nil: true
   delegate :gender, :beauty, to: :current_image, allow_nil: true
 
+  before_create :init_uid
+
   def self.init_from_mixin(mixin)
     mixin_id          = mixin['identity_number'].to_i
     user              = find_by_mixin_id(mixin_id) || new(mixin_id: mixin_id)
@@ -38,5 +40,11 @@ class User < ApplicationRecord
 
   def likes_count
     12
+  end
+
+  private
+
+  def init_uid
+    self.uid = SecureRandom.base58(24)
   end
 end
