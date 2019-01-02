@@ -17,6 +17,8 @@ class PaymentsController < ApplicationController
     format_render(200, 'OK', result)
   end
 
+  def check_order
+
   end
 
   private
