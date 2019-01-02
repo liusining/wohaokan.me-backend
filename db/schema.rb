@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190102111208) do
+ActiveRecord::Schema.define(version: 20190102162425) do
 
   create_table "images", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4" do |t|
     t.string "url"
@@ -28,6 +28,19 @@ ActiveRecord::Schema.define(version: 20190102111208) do
     t.boolean "using"
     t.index ["biz_token"], name: "index_images_on_biz_token", unique: true
     t.index ["user_id"], name: "index_images_on_user_id"
+  end
+
+  create_table "orders", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4" do |t|
+    t.bigint "issuer_id"
+    t.bigint "endpoint_id"
+    t.string "trace_id"
+    t.boolean "is_paid"
+    t.boolean "contact_given"
+    t.boolean "money_delivered"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["endpoint_id"], name: "index_orders_on_endpoint_id"
+    t.index ["issuer_id"], name: "index_orders_on_issuer_id"
   end
 
   create_table "users", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4" do |t|
@@ -54,5 +67,7 @@ ActiveRecord::Schema.define(version: 20190102111208) do
   end
 
   add_foreign_key "images", "users"
+  add_foreign_key "orders", "users", column: "endpoint_id"
+  add_foreign_key "orders", "users", column: "issuer_id"
   add_foreign_key "users", "images", column: "current_image_id"
 end

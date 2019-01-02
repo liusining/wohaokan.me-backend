@@ -31,6 +31,9 @@ gem 'rest-client'
 # using AWS services such as S3
 gem 'aws-sdk', '~> 3.0', '>= 3.0.1'
 
+# create uuid v1 as order trace id
+gem 'uuidtools'
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
