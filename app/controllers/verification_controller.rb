@@ -43,9 +43,9 @@ class VerificationController < ApplicationController
       url: Aws::S3::Object.new(Rails.application.secrets[:face_image_bucket], img.s3_key).presigned_url(:get, expires_in: 3600),
       beauty: img.beauty,
       gender: img.gender,
-      age: img.age,
-      verify_url: img.verify_url
+      age: img.age
     }
+    result[:verify_url] = img.verify_url unless img.verified
     format_render(status_code, msg, result)
   end
 
