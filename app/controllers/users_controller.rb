@@ -11,8 +11,6 @@ class UsersController < ApplicationController
     resp_body = JSON.parse(resp.body)
     user = User.init_from_mixin(resp_body)
     result = {
-      name: user.name,
-      avatar_url: user.avatar_url,
       session_key: user.session_key
     }
     format_render(200, 'OK', result)
@@ -22,6 +20,7 @@ class UsersController < ApplicationController
     # TODO: use real data
     result = {
       name: current_user.name,
+      avatar_url: current_user.avatar_url,
       mixin_id: current_user.mixin_id,
       description: current_user.description,
       has_image: !!current_user.current_image,
