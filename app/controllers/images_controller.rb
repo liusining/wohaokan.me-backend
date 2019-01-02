@@ -33,7 +33,7 @@ class ImagesController < ApplicationController
     # the user have logged in
     page   = params[:page].to_i.positive? ? params[:page].to_i : 1
     valid_images = Image.where(using: true, verified: true)
-    if params[:gender]
+    unless params[:gender].blank?
       valid_images = valid_images.where(gender: params[:gender])
     end
     images = valid_images.limit(10).offset((page - 1) * 10).map do |img|
