@@ -17,7 +17,7 @@ class ImagesController < ApplicationController
       biz_token = FaceppBizTokenService.perform(img, params[:image])
       img.biz_token = biz_token
       img.save!
-      render json: { status: 200, msg: 'OK', result: { beauty: beauty, gender: gender, age: age, verify_url: "https://openapi.faceid.com/lite/v1/do/#{biz_token}" } }
+      render json: { status: 200, msg: 'OK', result: { beauty: beauty, gender: gender, age: age, verify_url: img.verify_url } }
     else
       format_render(400, '图片上传失败')
     end

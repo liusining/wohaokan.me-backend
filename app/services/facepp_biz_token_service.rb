@@ -21,6 +21,7 @@ class FaceppBizTokenService
       biz_no: img_obj.image_no,
       comparison_type: 0,
       liveness_type: 'video_number',
+      liveness_retry_count: 5, # enable a user to try many times, so that we can reuse the same biz_token
       uuid: img_obj.user.id.to_s,
       image_ref1: file
     }
