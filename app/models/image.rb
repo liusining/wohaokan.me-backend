@@ -6,6 +6,7 @@ class Image < ApplicationRecord
 
   def assign_to_user!
     self.user.current_image = self
+    self.using = true
     self.user.save!
   end
 

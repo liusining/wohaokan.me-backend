@@ -45,7 +45,20 @@ class VerificationController < ApplicationController
       gender: img.gender,
       age: img.age
     }
-    result[:verify_url] = img.verify_url unless img.verified
+    unless img.verified
+      new_img_flag = Image.create!(url: img.url,
+                                   beauty: img.beauty,
+                                   gender: img.gender,
+                                   age: img.age,
+                                   user: img.user,
+                                   s3_key: img.s3_key,
+                                   image_no: SecureRandom.base58(24))
+      biz_token = FaceppBizTokenService.perform(new_img_flag,
+                                                Aws::S3::Object.new(Rails.application.secrets['face_image_bucket'], new_img_flag.s3_key))
+      new_img_flag.biz_token = biz_token
+      new_img_flag.save!
+      result[:verify_url] = new_img_flag.verify_url
+    end
     format_render(status_code, msg, result)
   end
 
