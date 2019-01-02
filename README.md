@@ -1,24 +1,10 @@
-# README
+# wohaokan.me Backend
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+1. Frontend: [here](https://github.com/liusining/wohaokan.me-frontend)
+2. Mixin service middleware: [here](https://github.com/liusining/wohaokan.me-mixin-middleware)
+3. API document: [here](https://github.com/liusining/wohaokan.me-api-doc)
+4. Video presentation: here at Youtube
 
-Things you may want to cover:
+## Image credits
 
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+All images used in demo are downloaded from [unsplash.com](https://unsplash.com) under [Unsplash license](https://unsplash.com/license).
