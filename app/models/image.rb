@@ -8,6 +8,7 @@ class Image < ApplicationRecord
     self.user.current_image = self
     self.using = true
     self.user.save!
+    self.save!
   end
 
   def verify_url
