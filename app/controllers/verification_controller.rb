@@ -53,11 +53,13 @@ class VerificationController < ApplicationController
                                    user: img.user,
                                    s3_key: img.s3_key,
                                    image_no: SecureRandom.base58(24))
+      img_file = Aws::S3::Object.new(Rails.application.secrets['face_image_bucket'], new_img_flag.s3_key).get.body
       biz_token = FaceppBizTokenService.perform(new_img_flag,
-                                                Aws::S3::Object.new(Rails.application.secrets['face_image_bucket'], new_img_flag.s3_key))
+                                                img_file)
       new_img_flag.biz_token = biz_token
       new_img_flag.save!
       result[:verify_url] = new_img_flag.verify_url
+      img_file.close
     end
     format_render(status_code, msg, result)
   end
