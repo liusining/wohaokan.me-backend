@@ -7,7 +7,7 @@ class FaceppBizTokenService
     Rails.logger.tagged('FaceppBizTokenService'.freeze) {|logger| logger.info "begin applying for a face++ biz-token"}
     start_time = Time.now
     # reopen image file since it has been closed in the former step
-    if file.tempfile.closed?
+    if file.is_a?(ActionDispatch::Http::UploadedFile) && file.tempfile.closed?
       file = File.new(file.tempfile)
     end
     # generate signature used in face++ api
