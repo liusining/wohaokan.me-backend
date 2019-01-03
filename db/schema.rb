@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190103060346) do
+ActiveRecord::Schema.define(version: 20190103104234) do
 
   create_table "images", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4" do |t|
     t.string "url"
@@ -39,6 +39,9 @@ ActiveRecord::Schema.define(version: 20190103060346) do
     t.boolean "money_delivered"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "delivery_trace_id"
+    t.string "conversation_id"
+    t.string "message_id"
     t.index ["endpoint_id"], name: "index_orders_on_endpoint_id"
     t.index ["issuer_id"], name: "index_orders_on_issuer_id"
   end
