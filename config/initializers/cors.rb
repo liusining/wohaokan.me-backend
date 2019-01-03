@@ -7,7 +7,7 @@
 
 Rails.application.config.middleware.insert_before 0, Rack::Cors do
   allow do
-    origins 'stg.wohaokan.me', 'wohaokan.me', 'www.wohaokan.me', 'localhost:9901'
+    origins 'stg.wohaokan.me', 'wohaokan.me', 'www.wohaokan.me', 'localhost:9901', '192.168.1.8:9901'
 
     resource '*',
              headers: :any,
