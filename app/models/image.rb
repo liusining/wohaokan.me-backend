@@ -1,14 +1,20 @@
 class Image < ApplicationRecord
   H5_LIVENESS_URL = 'https://openapi.faceid.com/lite/v1/do/'.freeze
   CLOUDFRONT_PRIVATE_KEY = "#{Rails.root}/config/cloudfront_key.pem"
+  FACE_ATTRIBUTES = 'gender,age,facequality,beauty'.freeze
   belongs_to :user
   enum gender: [:Female, :Male]
+  # enum verify_type: [:one_on_one, :liveness]
 
   def assign_to_user!
-    self.user.current_image = self
+    if user.current_image.present?
+      user.current_image.using = false
+      user.current_image.save!
+    end
+    user.current_image = self
     self.using = true
-    self.user.save!
-    self.save!
+    user.save!
+    save!
   end
 
   def verify_url

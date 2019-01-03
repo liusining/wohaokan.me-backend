@@ -59,7 +59,24 @@ class UsersController < ApplicationController
   end
 
   def update_image
-
+    img1 = current_user.current_image
+    img2 = params[:image]
+    begin
+      ok, face_token = CompareFaceService.new(img1.signed_url, Base64.strict_encode64(img2.read)).perform
+      if ok
+        img2.rewind
+        s3_key, url = UploadImageService.perform(img2)
+      end
+    ensure
+      img2.close
+    end
+    attrs = AnalyzeFaceService.new(face_token).perform
+    new_img = Image.new(url: url, beauty: attrs['beauty'], gender: attrs['gender'], age: attrs['age'],
+                        user: current_user, s3_key: s3_key, image_no: SecureRandom.base58(24),
+                        verified: true, verify_msg: '1:1', using: true)
+    new_img.save!
+    new_img.assign_to_user!
+    format_render(200, 'OK', {new_url: new_img.signed_url, beauty: new_img.beauty, gender: new_img.gender, age: new_img.age})
   end
 
   def update_info
