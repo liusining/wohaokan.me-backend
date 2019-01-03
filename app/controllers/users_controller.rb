@@ -28,6 +28,7 @@ class UsersController < ApplicationController
       beauty: current_user.beauty.to_i,
       gender: current_user.gender.to_s,
       age: current_user.age,
+      display_image: !!current_user&.current_image&.using,
       rank: 14,
       income: 0.1,
       tip_transations: {

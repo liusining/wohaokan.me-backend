@@ -10,4 +10,5 @@ Rails.application.routes.draw do
   get 'users/:id', to: 'users#show'
   post :like_others, to: 'payments#like_others'
   post :check_order, to: 'payments#check_order'
+  post :switch_display, to: 'images#switch_display'
 end

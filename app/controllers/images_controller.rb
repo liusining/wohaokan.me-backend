@@ -1,6 +1,6 @@
 class ImagesController < ApplicationController
   before_action :check_params, only: [:upload_image]
-  before_action :load_user, only: [:upload_image]
+  before_action :load_user, only: [:upload_image, :switch_display]
 
   def upload_image
     # TODO: limit image size in nginx, for speeding up, for facepp limitation
@@ -43,6 +43,17 @@ class ImagesController < ApplicationController
       }
     end
     format_render(200, 'OK', { images: images, pagination: { page: page, total: valid_images.count} })
+  end
+
+  def switch_display
+    image = current_user.current_image
+    unless image.present?
+      render json: {error: "you don's have an image"}, status: 400
+      return
+    end
+    image.using = !image.using
+    image.save!
+    format_render(200, 'OK', {display_image: image.using})
   end
 
   private
