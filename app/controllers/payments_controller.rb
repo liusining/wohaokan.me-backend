@@ -3,6 +3,10 @@ class PaymentsController < ApplicationController
   before_action :load_user, only: [:like_others, :check_order]
 
   def like_others
+    unless current_user.scope.include?("ASSETS:READ")
+      format_render(400, '您未对我们授权支付功能，暂时无法打赏')
+      return
+    end
     endpoint = User.find_by_uid(params[:user_id])
     unless endpoint.present?
       format_render(400, 'target user is not found')
