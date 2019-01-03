@@ -33,6 +33,12 @@ class PaymentsController < ApplicationController
       return
     end
     order.update!(is_paid: true)
+    delivery_trace_id = DeliverMoneyService.new(order, request.request_id).perform
+    if !delivery_trace_id.blank?
+      order.update!(delivery_trace_id: delivery_trace_id, money_delivered: true)
+    else
+      order.update!(money_delivered: false)
+    end
     format_render(200, 'OK', {mixin_id: order.endpoint.mixin_id.to_s})
   end
 
