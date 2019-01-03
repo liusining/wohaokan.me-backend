@@ -11,7 +11,7 @@ class DeliverContactService
     start_time = Time.now
     params = {
       mixin_uid: @order.issuer.mixin_uid,
-      contact_id: @order.endpoint.mixin_uid,
+      contact_uid: @order.endpoint.mixin_uid,
       request_id: @request_id
     }
     resp = RestClient.post(URL, params) {|res, _req, _result| res}
