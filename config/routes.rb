@@ -9,4 +9,5 @@ Rails.application.routes.draw do
   post :update_image, to: 'users#update_image'
   get 'users/:id', to: 'users#show'
   post :like_others, to: 'payments#like_others'
+  post :check_order, to: 'payments#check_order'
 end

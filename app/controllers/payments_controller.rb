@@ -1,6 +1,6 @@
 class PaymentsController < ApplicationController
-  before_action :check_params, only: [:like_others]
-  before_action :load_user, only: [:like_others]
+  before_action :check_params, only: [:like_others, :check_order]
+  before_action :load_user, only: [:like_others, :check_order]
 
   def like_others
     endpoint = User.find_by_uid(params[:user_id])
@@ -18,12 +18,28 @@ class PaymentsController < ApplicationController
   end
 
   def check_order
-
+    order = Order.find_by(trace_id: params[:trace_id], is_paid: false)
+    if !order.present? || order.issuer_id != current_user.id
+      render json: {error: "the order doesn't exist"}, status: 400
+      return
+    end
+    valid = CheckTransferService.new(current_user, order).perform
+    unless valid
+      format_render(400, 'invalid payment')
+      return
+    end
+    order.update!(is_paid: true)
+    format_render(200, 'OK', {mixin_id: order.endpoint.mixin_id.to_s})
   end
 
   private
 
   def check_params
-    params.require(:user_id)
+    if params[:action] == 'like_others'
+      params.require(:user_id)
+    end
+    if params[:action] == 'check_order'
+      params.require(:trace_id)
+    end
   end
 end

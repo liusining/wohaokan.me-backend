@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190102162425) do
+ActiveRecord::Schema.define(version: 20190103060346) do
 
   create_table "images", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4" do |t|
     t.string "url"
@@ -34,7 +34,7 @@ ActiveRecord::Schema.define(version: 20190102162425) do
     t.bigint "issuer_id"
     t.bigint "endpoint_id"
     t.string "trace_id"
-    t.boolean "is_paid"
+    t.boolean "is_paid", default: false
     t.boolean "contact_given"
     t.boolean "money_delivered"
     t.datetime "created_at", null: false
