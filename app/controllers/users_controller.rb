@@ -65,7 +65,7 @@ class UsersController < ApplicationController
       @ok, face_token = CompareFaceService.new(img1.signed_url, Base64.strict_encode64(img2.read)).perform
       if @ok
         img2.rewind
-        s3_key, url = UploadImageService.perform(img2)
+        s3_key, url = UploadImageService.perform(img2.tempfile)
       else
         format_render(400, '和之前的照片不是同一人')
       end
