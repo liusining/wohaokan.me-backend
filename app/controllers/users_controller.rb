@@ -19,7 +19,7 @@ class UsersController < ApplicationController
   def get_user
     received_orders = Order.where(endpoint_id: current_user.id, money_delivered: true)
     paid_orders = Order.where(issuer_id: current_user.id, is_paid: true)
-    images = paid_orders.first(6).includes(:endpoint).map {|order| order.endpoint&.current_image&.signed_url}.compact
+    images = paid_orders.includes(:endpoint).first(6).map {|order| order.endpoint&.current_image&.signed_url}.compact
     result = {
       name: current_user.name,
       avatar_url: current_user.avatar_url,
