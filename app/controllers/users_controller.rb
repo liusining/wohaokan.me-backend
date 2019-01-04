@@ -62,13 +62,18 @@ class UsersController < ApplicationController
     img1 = current_user.current_image
     img2 = params[:image]
     begin
-      ok, face_token = CompareFaceService.new(img1.signed_url, Base64.strict_encode64(img2.read)).perform
-      if ok
+      @ok, face_token = CompareFaceService.new(img1.signed_url, Base64.strict_encode64(img2.read)).perform
+      if @ok
         img2.rewind
         s3_key, url = UploadImageService.perform(img2)
+      else
+        format_render(400, '和之前的照片不是同一人')
       end
     ensure
       img2.close
+    end
+    unless @ok
+      return
     end
     attrs = AnalyzeFaceService.new(face_token).perform
     new_img = Image.new(url: url, beauty: attrs['beauty'], gender: attrs['gender'], age: attrs['age'],
