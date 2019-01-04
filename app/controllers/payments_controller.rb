@@ -41,7 +41,7 @@ class PaymentsController < ApplicationController
     end
     unless current_user.current_image.present?
       begin
-        DeliverTextService(current_user, User::INVITATION_MSG, request.request_id)
+        DeliverTextService.new(current_user, User::INVITATION_MSG, request.request_id).perform
       rescue => ex
         logger.info("cannot deliver text: #{ex.message}")
       end
