@@ -18,6 +18,10 @@ class AnalyzeFaceService
     Rails.logger.tagged(self.class.to_s.freeze) {|logger| logger.info "response: #{resp}"}
     Rails.logger.tagged(self.class.to_s.freeze) {|logger| logger.info "time_used: #{Time.now - start_time}s"}
     resp_hash = JSON.parse(resp.body)
-    resp_hash['faces'][0]['attributes']
+    face_attrs = resp_hash['faces'][0]['attributes']
+    gender = face_attrs['gender']['value']
+    age = face_attrs['age']['value']
+    beauty = face_attrs['beauty']["#{gender.downcase}_score"]
+    [beauty, gender, age]
   end
 end

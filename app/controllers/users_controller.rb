@@ -75,8 +75,8 @@ class UsersController < ApplicationController
     unless @ok
       return
     end
-    attrs = AnalyzeFaceService.new(face_token).perform
-    new_img = Image.new(url: url, beauty: attrs['beauty'], gender: attrs['gender'], age: attrs['age'],
+    beauty, gender, age = AnalyzeFaceService.new(face_token).perform
+    new_img = Image.new(url: url, beauty: beauty, gender: gender, age: age,
                         user: current_user, s3_key: s3_key, image_no: SecureRandom.base58(24),
                         verified: true, verify_msg: '1:1', using: true)
     new_img.save!
