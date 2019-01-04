@@ -7,10 +7,6 @@ class Image < ApplicationRecord
   # enum verify_type: [:one_on_one, :liveness]
 
   def assign_to_user!
-    if user.current_image.present?
-      user.current_image.using = false
-      user.current_image.save!
-    end
     user.current_image = self
     self.using = true
     user.save!

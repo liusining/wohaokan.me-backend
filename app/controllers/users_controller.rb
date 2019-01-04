@@ -83,6 +83,8 @@ class UsersController < ApplicationController
                         verified: true, verify_msg: '1:1', using: true)
     new_img.save!
     new_img.assign_to_user!
+    img1.using = false
+    img1.save!
     format_render(200, 'OK', {new_url: new_img.signed_url, beauty: new_img.beauty, gender: new_img.gender, age: new_img.age})
   end
 
