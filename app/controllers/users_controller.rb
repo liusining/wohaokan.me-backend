@@ -17,7 +17,9 @@ class UsersController < ApplicationController
   end
 
   def get_user
-    # TODO: use real data
+    received_orders = Order.where(endpoint_id: current_user.id, money_delivered: true)
+    paid_orders = Order.where(issuer_id: current_user.id, is_paid: true)
+    images = paid_orders.first(6).includes(:endpoint).map {|order| order.endpoint&.current_image&.signed_url}.compact
     result = {
       name: current_user.name,
       avatar_url: current_user.avatar_url,
@@ -29,13 +31,13 @@ class UsersController < ApplicationController
       gender: current_user.gender.to_s,
       age: current_user.age,
       display_image: !!current_user&.current_image&.using,
-      rank: 14,
-      income: 0.1,
+      rank: current_user.id,
+      income: (0.1 * received_orders.count).round(1).to_s,
       tip_transations: {
-        count: 5,
-        to_boy: 2,
-        to_girl: 3,
-        images: ["https://s3-ap-northeast-1.amazonaws.com/wohaokan.me/cover-test.jpeg"] * 5
+        count: paid_orders.count,
+        # to_boy: 2,
+        # to_girl: 3,
+        images: images
       }
     }
     format_render(200, 'OK', result)
