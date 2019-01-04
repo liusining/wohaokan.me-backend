@@ -3,6 +3,8 @@ class User < ApplicationRecord
   delegate :signed_url, to: :current_image, prefix: 'image', allow_nil: true
   delegate :gender, :beauty, to: :current_image, allow_nil: true
 
+  INVITATION_MSG = '点击 wohaokan.me/personalHome/info，你也可以参与「我好看么」'.freeze
+
   before_create :init_uid
 
   def self.init_from_mixin(mixin)

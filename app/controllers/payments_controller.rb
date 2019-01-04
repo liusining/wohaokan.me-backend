@@ -39,6 +39,13 @@ class PaymentsController < ApplicationController
     else
       order.update!(contact_given: false)
     end
+    unless current_user.current_image.present?
+      begin
+        DeliverTextService(current_user, User::INVITATION_MSG, request.request_id)
+      rescue => ex
+        logger.info("cannot deliver text: #{ex.message}")
+      end
+    end
     delivery_trace_id = DeliverMoneyService.new(order, request.request_id).perform
     if !delivery_trace_id.blank?
       order.update!(delivery_trace_id: delivery_trace_id, money_delivered: true)

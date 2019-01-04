@@ -1,5 +1,5 @@
 class DeliverMoneyService
-  URL = "#{Rails.application.secrets['mixin_service']}/deliver_money"
+  URL = "#{Rails.application.secrets['mixin_service']}/deliver_money".freeze
 
   def initialize(order, request_id)
     @order = order
