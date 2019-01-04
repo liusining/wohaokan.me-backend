@@ -41,7 +41,7 @@ class User < ApplicationRecord
   end
 
   def likes_count
-    Order.where(endpoint_id: current_user.id, money_delivered: true).count
+    Order.where(endpoint_id: self.id, money_delivered: true).count
   end
 
   private
